@@ -5,6 +5,8 @@
 <h1 align="center">Tesseract</h1>
 <p align="center"><b>Post-quantum disk &amp; file encryption for the Linux desktop.</b></p>
 
+> **Cross-platform core:** The encryption engine (`tesseract-core`) is pure Rust with no OS calls, no unsafe code, and no platform assumptions — it was designed from the start to be portable. The GTK4 GUI and the Linux-specific agent are the only platform-bound layers. Porting to Windows or macOS means replacing those two components; the crypto heart carries over unchanged.
+
 [![Made with Rust](https://img.shields.io/badge/Rust-1.85%2B-BD93F9.svg?logo=rust&logoColor=white)](https://www.rust-lang.org)
 [![GTK4](https://img.shields.io/badge/GTK4-libadwaita-8BE9FD.svg)](https://www.gtk.org)
 [![Post-Quantum](https://img.shields.io/badge/Post--Quantum-Hybrid%20KEM-CBA6F7.svg)]()
@@ -42,6 +44,33 @@ locally: no account, no network, no telemetry.
 > your normal user. The default data plane (FUSE + udisks2) mounts encrypted
 > volumes with no `sudo`, no setuid, and no polkit prompt for the device
 > itself — exactly like plugging in a USB stick.
+
+---
+
+## Screenshots
+
+<table>
+  <tr>
+    <td align="center"><img src="images/unlock.png" width="320"/><br/><sub>Unlock screen</sub></td>
+    <td align="center"><img src="images/new-volume.png" width="320"/><br/><sub>Create encrypted volume</sub></td>
+    <td align="center"><img src="images/cipher-picker.png" width="320"/><br/><sub>Cipher selection</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="images/unlock-volume.png" width="320"/><br/><sub>Unlock &amp; mount volume</sub></td>
+    <td align="center"><img src="images/file-encrypt-password.png" width="320"/><br/><sub>File / folder encryption — password mode</sub></td>
+    <td align="center"><img src="images/file-encrypt-algorithms.png" width="320"/><br/><sub>File encryption algorithm picker</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="images/file-encrypt-recipients.png" width="320"/><br/><sub>File encryption — recipient (public-key) mode</sub></td>
+    <td align="center"><img src="images/volume-keys.png" width="320"/><br/><sub>Volume keys &amp; YubiKey enrolment</sub></td>
+    <td align="center"><img src="images/identities.png" width="320"/><br/><sub>Hybrid PQ identity management</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="images/menu.png" width="320"/><br/><sub>App menu</sub></td>
+    <td align="center"><img src="images/preferences-appearance.png" width="320"/><br/><sub>Preferences — appearance &amp; themes</sub></td>
+    <td align="center"><img src="images/preferences-cascade.png" width="320"/><br/><sub>Preferences — default cipher cascade</sub></td>
+  </tr>
+</table>
 
 ---
 
