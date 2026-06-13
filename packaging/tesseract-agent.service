@@ -1,0 +1,55 @@
+# Per-user systemd service for the Tesseract key agent.
+# Install to ~/.config/systemd/user/ (or /usr/lib/systemd/user for system-wide
+# availability) and enable with:  systemctl --user enable --now tesseract-agent
+#
+# Socket-activation friendly, but the agent binds its own socket so a plain
+# service works too. The hardening directives below mirror and reinforce the
+# in-process sandbox (Landlock + seccomp + mlockall) applied at startup.
+
+[Unit]
+Description=Tesseract post-quantum encryption key agent
+Documentation=https://github.com/jegly/tesseract
+After=dbus.service
+PartOf=graphical-session.target
+
+[Service]
+Type=notify
+ExecStart=%h/.local/bin/tesseract-agent
+Restart=on-failure
+RestartSec=2
+
+# The agent must lock memory; raise the limit so mlockall(MCL_FUTURE) succeeds.
+LimitMEMLOCK=infinity
+# No core dumps ever (the agent also sets RLIMIT_CORE=0 itself).
+LimitCORE=0
+
+# --- sandboxing (unit-level, complements the in-process Landlock/seccomp) ---
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=read-only
+# the agent needs to write its runtime dir, state dir, and FUSE mountpoints
+ReadWritePaths=%t/tesseract %S/tesseract
+PrivateTmp=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+ProtectClock=yes
+ProtectHostname=yes
+ProtectProc=invisible
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+# FUSE + udisks + D-Bus need these address families
+RestrictAddressFamilies=AF_UNIX AF_NETLINK AF_INET AF_INET6
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+SystemCallFilter=~@privileged @resources @obsolete
+# /dev/fuse for the data plane
+DeviceAllow=/dev/fuse rw
+DeviceAllow=/dev/null rw
+
+[Install]
+WantedBy=graphical-session.target

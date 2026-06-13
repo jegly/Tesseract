@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC
+ "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
+<policyconfig>
+  <vendor>Tesseract</vendor>
+  <vendor_url>https://github.com/jegly/tesseract</vendor_url>
+
+  <!--
+    The ONLY privileged action in Tesseract. The default profile (FUSE/ublk
+    data planes) never triggers it. It authorizes the dm-crypt fast path,
+    which the UI labels a weaker profile because the kernel holds the key.
+    auth_admin_keep allows a scoped, time-limited grant so the user is not
+    prompted for every mount within a session.
+  -->
+  <action id="com.jegly.tesseract.dmcrypt">
+    <description>Mount a Tesseract volume via the dm-crypt fast path</description>
+    <message>Authentication is required to use the dm-crypt fast path (the kernel will hold the encryption key)</message>
+    <icon_name>com.jegly.tesseract</icon_name>
+    <defaults>
+      <allow_any>auth_admin</allow_any>
+      <allow_inactive>auth_admin</allow_inactive>
+      <allow_active>auth_admin_keep</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.exec.path">/usr/libexec/tesseract-mountd</annotate>
+  </action>
+</policyconfig>

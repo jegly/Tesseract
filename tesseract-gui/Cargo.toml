@@ -1,0 +1,29 @@
+[package]
+name = "tesseract-gui"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+description = "Tesseract GTK4/libadwaita GUI. Holds zero key material."
+
+[[bin]]
+name = "tesseract-gui"
+path = "src/main.rs"
+
+[dependencies]
+tesseract-proto = { workspace = true, features = ["client"] }
+gtk4 = { workspace = true }
+libadwaita = { workspace = true }
+relm4 = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+toml = { workspace = true }
+anyhow = { workspace = true }
+log = { workspace = true }
+env_logger = { workspace = true }
+dirs = { workspace = true }
+zeroize = { workspace = true }
+rustix = { workspace = true }
+tar = "0.4"
+argon2 = { workspace = true }
+getrandom = { workspace = true }

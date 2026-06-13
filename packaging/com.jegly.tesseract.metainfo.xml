@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.jegly.tesseract</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <name>Tesseract</name>
+  <summary>Post-quantum disk and file encryption</summary>
+
+  <description>
+    <p>
+      Tesseract is a privilege-separated, post-quantum disk-encryption tool for
+      the Linux desktop. A memory-locked, sandboxed background agent owns all
+      key material and performs every cryptographic operation; the GTK4 GUI
+      never touches a key.
+    </p>
+    <p>Features:</p>
+    <ul>
+      <li>Encrypted file containers, whole partitions, and hidden volumes for plausible deniability</li>
+      <li>Cipher cascades (AES, Serpent, Twofish, Camellia, ChaCha20) up to depth 5</li>
+      <li>Post-quantum hybrid keyslots (X25519 + ML-KEM-1024) and attestation (ML-DSA-87)</li>
+      <li>Standalone file encryption to recipients (HPKE / RFC 9180), multi-recipient and signable</li>
+      <li>FIDO2 / YubiKey enrollment via the hmac-secret extension</li>
+      <li>Auto-dismount on lock, suspend, logout, idle, and a one-press panic that wipes keys</li>
+      <li>Fully non-root by default (FUSE + udisks2); optional dm-crypt fast path behind polkit</li>
+      <li>Modern, themeable UI: Dracula, Catppuccin (4 flavors), Vintage Light, Neon Tessera, and follow-system, with a live accent picker</li>
+    </ul>
+  </description>
+
+  <launchable type="desktop-id">com.jegly.tesseract.desktop</launchable>
+
+  <categories>
+    <category>Utility</category>
+    <category>Security</category>
+  </categories>
+
+  <provides>
+    <binary>tesseract</binary>
+    <binary>tesseract-gui</binary>
+    <binary>tesseract-agent</binary>
+  </provides>
+
+  <content_rating type="oars-1.1" />
+
+  <releases>
+    <release version="0.1.0" date="2026-06-11">
+      <description>
+        <p>Initial release.</p>
+      </description>
+    </release>
+  </releases>
+</component>

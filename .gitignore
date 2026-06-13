@@ -1,0 +1,8 @@
+/target
+tesseract-fuzz/target
+tesseract-fuzz/corpus
+tesseract-fuzz/artifacts
+*.img
+*.pqc
+HANDOFF.md
+DECISIONS.md

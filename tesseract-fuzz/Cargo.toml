@@ -1,0 +1,52 @@
+[package]
+name = "tesseract-fuzz"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+# cargo-fuzz manages this crate separately (nightly). It is intentionally NOT
+# a workspace member so the stable toolchain builds the rest of the workspace.
+# Run with:  cargo +nightly fuzz run header_parser
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+tesseract-core = { path = "../tesseract-core" }
+tesseract-proto = { path = "../tesseract-proto" }
+
+[[bin]]
+name = "header_parser"
+path = "fuzz_targets/header_parser.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "keyslot_decoder"
+path = "fuzz_targets/keyslot_decoder.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "ipc_framer"
+path = "fuzz_targets/ipc_framer.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "file_header"
+path = "fuzz_targets/file_header.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "deniable_open"
+path = "fuzz_targets/deniable_open.rs"
+test = false
+doc = false
+bench = false

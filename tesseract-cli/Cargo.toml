@@ -1,0 +1,22 @@
+[package]
+name = "tesseract-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+description = "Tesseract command-line interface (scripting parity with the GUI)."
+
+[[bin]]
+name = "tesseract"
+path = "src/main.rs"
+
+[dependencies]
+tesseract-proto = { workspace = true, features = ["client"] }
+clap = { workspace = true }
+anyhow = { workspace = true }
+serde_json = { workspace = true }
+rpassword = "7"
+zeroize = { workspace = true }
+rustix = { workspace = true }
+hex = { workspace = true }
+tar = "0.4"

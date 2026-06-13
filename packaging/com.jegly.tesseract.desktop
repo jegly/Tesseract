@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=Tesseract
+GenericName=Disk Encryption
+Comment=Post-quantum disk and file encryption
+Icon=com.jegly.tesseract
+Exec=tesseract-gui
+Terminal=false
+Categories=Utility;Security;System;GTK;
+Keywords=encryption;crypto;veracrypt;luks;post-quantum;pqc;kyber;dilithium;vault;
+StartupNotify=true
+StartupWMClass=com.jegly.tesseract
+MimeType=application/x-tesseract-volume;application/x-tesseract-file;

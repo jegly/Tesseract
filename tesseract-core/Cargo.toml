@@ -1,0 +1,75 @@
+[package]
+name = "tesseract-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+description = "Tesseract cryptographic core: cascade engine, keyslots, headers, HPKE file mode. Pure Rust, no OS calls."
+
+[features]
+default = []
+# Non-standardized / less-reviewed primitives. Per-volume opt-in, labeled in the GUI.
+experimental = [
+    "dep:threefish",
+    "dep:kuznyechik",
+    "dep:sm4",
+    "dep:aria",
+    "dep:adiantum",
+    "dep:whirlpool",
+    "dep:streebog",
+    "dep:balloon-hash",
+    "dep:sha2_010",
+]
+
+[dependencies]
+# symmetric
+aes = { workspace = true }
+serpent = { workspace = true }
+twofish = { workspace = true }
+camellia = { workspace = true }
+chacha20 = { workspace = true }
+xts-mode = { workspace = true }
+cipher = { workspace = true }
+threefish = { workspace = true, optional = true }
+kuznyechik = { workspace = true, optional = true }
+sm4 = { workspace = true, optional = true }
+aria = { workspace = true, optional = true }
+adiantum = { workspace = true, optional = true }
+
+# AEAD
+chacha20poly1305 = { workspace = true }
+aes-gcm-siv = { workspace = true }
+aes-gcm = { workspace = true }
+
+# hash / MAC / KDF
+sha2 = { workspace = true }
+sha3 = { workspace = true }
+blake3 = { workspace = true }
+blake2 = { workspace = true }
+whirlpool = { workspace = true, optional = true }
+streebog = { workspace = true, optional = true }
+hkdf = { workspace = true }
+hmac = { workspace = true }
+digest = { workspace = true }
+argon2 = { workspace = true }
+scrypt = { workspace = true }
+pbkdf2 = { workspace = true }
+balloon-hash = { workspace = true, optional = true }
+sha2_010 = { package = "sha2", version = "0.10", optional = true }
+tiny-keccak = { workspace = true }
+
+# asymmetric / PQ
+ml-kem = { workspace = true }
+ml-dsa = { workspace = true }
+x25519-dalek = { workspace = true }
+ed25519-dalek = { workspace = true }
+
+# support
+subtle = { workspace = true }
+zeroize = { workspace = true }
+minicbor = { workspace = true }
+hex = { workspace = true }
+thiserror = { workspace = true }
+
+[dev-dependencies]
+hex-literal = "1"

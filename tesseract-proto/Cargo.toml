@@ -1,0 +1,19 @@
+[package]
+name = "tesseract-proto"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+description = "Tesseract IPC contract: framing, request/response types. Pure (fuzzable) framer."
+
+[features]
+default = []
+# Blocking socket client (OS code). The default crate stays pure/fuzzable.
+client = ["dep:rustix"]
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+zeroize = { workspace = true }
+rustix = { workspace = true, optional = true }

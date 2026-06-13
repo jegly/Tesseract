@@ -1,0 +1,18 @@
+[package]
+name = "tesseract-mountd"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+description = "Optional polkit-gated mount micro-helper for the dm-crypt fast path. CAP_SYS_ADMIN and nothing else."
+
+[dependencies]
+rustix = { workspace = true }
+libc = { workspace = true }
+nix = { workspace = true }
+zbus = { workspace = true }
+anyhow = { workspace = true }
+log = { workspace = true }
+env_logger = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
