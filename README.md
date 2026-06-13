@@ -25,6 +25,8 @@
 
 If this project helped you, please ⭐️ star it to help others find it.
 
+sha256:cc00fe1c2af57a624fba2afd0e4698bd37c725632cb98fa281e36a863dd79c5c
+
 ---
 
 ## What is Tesseract?
