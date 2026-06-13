@@ -6,3 +6,5 @@ tesseract-fuzz/artifacts
 *.pqc
 HANDOFF.md
 DECISIONS.md
+*.deb
+target/deb-staging/
