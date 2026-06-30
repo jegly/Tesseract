@@ -42,6 +42,42 @@ pub fn socket_path() -> PathBuf {
     base.join(crate::SOCKET_NAME)
 }
 
+/// Best-effort start of the agent. Prefers the packaged systemd user unit
+/// (so the agent is supervised and survives client exit); falls back to
+/// spawning the installed binary detached. Failures are intentionally
+/// swallowed — `connect_autostart` reports the real error after its retries.
+fn start_agent() {
+    use std::process::{Command, Stdio};
+
+    // Preferred: the packaged user service. `systemctl start` blocks until a
+    // Type=notify unit is ready (or fails), so success means the socket is up.
+    let via_systemd = Command::new("systemctl")
+        .args(["--user", "start", "tesseract-agent.service"])
+        .stdin(Stdio::null())
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
+        .status()
+        .map(|s| s.success())
+        .unwrap_or(false);
+    if via_systemd {
+        return;
+    }
+
+    // Fallback (no systemd, or the unit failed): spawn the binary detached so
+    // it outlives this process. Tried in PATH order; first success wins.
+    for bin in ["tesseract-agent", "/usr/bin/tesseract-agent"] {
+        if Command::new(bin)
+            .stdin(Stdio::null())
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .spawn()
+            .is_ok()
+        {
+            return;
+        }
+    }
+}
+
 pub struct Client {
     stream: UnixStream,
     next_id: u64,
@@ -61,6 +97,39 @@ impl Client {
             source,
         })?;
         Ok(Self { stream, next_id: 1 })
+    }
+
+    /// Connect to the agent, starting it first if it isn't already running.
+    ///
+    /// Used by the GUI and CLI so a freshly-installed package works on the very
+    /// first launch without a re-login: if the socket is absent we ask the
+    /// systemd user manager to start `tesseract-agent`, falling back to
+    /// spawning the installed binary directly, then retry briefly while it
+    /// binds the socket. When `TESSERACT_SOCKET` points the client elsewhere
+    /// (tests / custom setups) we never try to manage an agent — just connect.
+    pub fn connect_autostart() -> Result<Self, ClientError> {
+        match Self::connect() {
+            Ok(c) => return Ok(c),
+            Err(e) => {
+                if std::env::var_os("TESSERACT_SOCKET").is_some() {
+                    return Err(e);
+                }
+                start_agent();
+            }
+        }
+        // Retry for ~3s while a Type=notify agent comes up and binds.
+        let mut last: Option<ClientError> = None;
+        for _ in 0..30 {
+            std::thread::sleep(std::time::Duration::from_millis(100));
+            match Self::connect() {
+                Ok(c) => return Ok(c),
+                Err(e) => last = Some(e),
+            }
+        }
+        match last {
+            Some(e) => Err(e),
+            None => Self::connect(),
+        }
     }
 
     /// Send a request with optional fds and secrets; wait for the response.

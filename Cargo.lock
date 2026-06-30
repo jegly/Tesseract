@@ -2915,7 +2915,7 @@ dependencies = [
 
 [[package]]
 name = "tesseract-agent"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "anyhow",
  "base64",
@@ -2944,7 +2944,7 @@ dependencies = [
 
 [[package]]
 name = "tesseract-cli"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "anyhow",
  "clap",
@@ -2959,7 +2959,7 @@ dependencies = [
 
 [[package]]
 name = "tesseract-core"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "adiantum",
  "aes 0.9.1",
@@ -3005,7 +3005,7 @@ dependencies = [
 
 [[package]]
 name = "tesseract-gui"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "anyhow",
  "argon2",
@@ -3027,7 +3027,7 @@ dependencies = [
 
 [[package]]
 name = "tesseract-mountd"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "anyhow",
  "env_logger",
@@ -3042,7 +3042,7 @@ dependencies = [
 
 [[package]]
 name = "tesseract-proto"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "rustix",
  "serde",

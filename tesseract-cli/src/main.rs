@@ -580,7 +580,7 @@ fn resolve_recipients(client: &mut Client, recipients: &[String]) -> Result<Vec<
 
 fn main() -> Result<()> {
     let cli = Cli::parse();
-    let mut client = Client::connect()?;
+    let mut client = Client::connect_autostart()?;
 
     match cli.command {
         Command::Status { json } => {

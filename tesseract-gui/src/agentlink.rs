@@ -414,7 +414,7 @@ pub fn spawn(out: relm4::Sender<AgentMsg>) -> std::sync::mpsc::Sender<Command> {
     std::thread::Builder::new()
         .name("agent-commands".into())
         .spawn(move || {
-            let mut client = match Client::connect() {
+            let mut client = match Client::connect_autostart() {
                 Ok(mut c) => {
                     match c.call(Op::Hello { version: tesseract_proto::PROTOCOL_VERSION }, &[], vec![]) {
                         Ok(resp) => {
@@ -436,7 +436,7 @@ pub fn spawn(out: relm4::Sender<AgentMsg>) -> std::sync::mpsc::Sender<Command> {
 
             while let Ok(cmd) = rx.recv() {
                 if client.is_none() {
-                    client = Client::connect().ok();
+                    client = Client::connect_autostart().ok();
                     if client.is_none() {
                         out.send(AgentMsg::Error("agent unreachable".into())).ok();
                         continue;

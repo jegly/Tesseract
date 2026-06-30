@@ -42,6 +42,16 @@
   <content_rating type="oars-1.1" />
 
   <releases>
+    <release version="0.1.1" date="2026-06-21">
+      <description>
+        <p>
+          Fix the key agent failing to start on hardened kernels
+          (apparmor_restrict_unprivileged_userns), which caused
+          "agent unreachable" on first launch. The GUI and CLI now also
+          start the agent automatically if it is not already running.
+        </p>
+      </description>
+    </release>
     <release version="0.1.0" date="2026-06-11">
       <description>
         <p>Initial release.</p>

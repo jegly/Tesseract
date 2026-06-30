@@ -36,9 +36,50 @@ install -m644 "$REPO/packaging/com.jegly.tesseract.desktop"      "$STAGING/usr/s
 install -m644 "$REPO/packaging/com.jegly.tesseract.metainfo.xml" "$STAGING/usr/share/metainfo/"
 install -m644 "$REPO/packaging/com.jegly.tesseract.svg"          "$STAGING/usr/share/icons/hicolor/scalable/apps/"
 install -m644 "$REPO/packaging/com.jegly.tesseract.policy"       "$STAGING/usr/share/polkit-1/actions/"
-sed 's|ExecStart=.*tesseract-agent|ExecStart=/usr/bin/tesseract-agent|' \
-  "$REPO/packaging/tesseract-agent.service" \
-  > "$STAGING/usr/lib/systemd/user/tesseract-agent.service"
+# The deb unit deliberately drops every directive that requires the systemd
+# user manager to (a) create a user/mount namespace or (b) drop capabilities
+# from the bounding set — both are blocked for unprivileged user services on
+# hardened kernels (apparmor_restrict_unprivileged_userns=1 on Ubuntu 23.10+ /
+# Debian Bookworm+), which otherwise fails ExecStart at "step CAPABILITIES"
+# with exit 218.
+#
+# Omitted for this reason:
+#   * namespace-based: ProtectSystem, ProtectHome, PrivateTmp, ProtectKernel*,
+#     ProtectProc, ProtectHostname, MemoryDenyWriteExecute, DeviceAllow
+#   * capability-dropping: ProtectClock (strips CAP_SYS_TIME/CAP_WAKE_ALARM →
+#     PR_CAPBSET_DROP → EPERM for the unprivileged --user manager)
+#
+# Only seccomp/prctl/rlimit directives remain (no namespace, no cap drop), so
+# the agent starts on the first launch with no re-login. The source
+# packaging/tesseract-agent.service keeps the full set for other distros, and
+# the agent's own os/harden.rs applies the equivalent isolation at runtime.
+cat > "$STAGING/usr/lib/systemd/user/tesseract-agent.service" <<'UNIT'
+[Unit]
+Description=Tesseract post-quantum encryption key agent
+Documentation=https://github.com/jegly/Tesseract
+After=dbus.service
+PartOf=graphical-session.target
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/tesseract-agent
+Restart=on-failure
+RestartSec=2
+LimitMEMLOCK=infinity
+LimitCORE=0
+NoNewPrivileges=yes
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RestrictAddressFamilies=AF_UNIX AF_NETLINK AF_INET AF_INET6
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+SystemCallFilter=~@privileged @resources @obsolete
+
+[Install]
+WantedBy=graphical-session.target
+UNIT
 chmod 644 "$STAGING/usr/lib/systemd/user/tesseract-agent.service"
 
 # Font
@@ -67,6 +108,11 @@ cat > "$STAGING/DEBIAN/postinst" <<'EOF'
 #!/bin/sh
 set -e
 if [ "$1" = "configure" ]; then
+    # Enable the user agent for every user (creates the WantedBy symlinks under
+    # /etc/systemd/user); this works from a root maintainer script with no user
+    # bus and starts the agent on each user's next login. Mid-session first-run
+    # is covered by the GUI/CLI auto-start path, so no per-session start here.
+    systemctl --global enable tesseract-agent.service 2>/dev/null || true
     systemctl --user daemon-reload 2>/dev/null || true
     gtk-update-icon-cache -f -t /usr/share/icons/hicolor 2>/dev/null || true
     fc-cache -f /usr/share/fonts/truetype/tesseract 2>/dev/null || true
@@ -79,6 +125,7 @@ cat > "$STAGING/DEBIAN/postrm" <<'EOF'
 #!/bin/sh
 set -e
 if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
+    systemctl --global disable tesseract-agent.service 2>/dev/null || true
     gtk-update-icon-cache -f -t /usr/share/icons/hicolor 2>/dev/null || true
     fc-cache -f 2>/dev/null || true
 fi
