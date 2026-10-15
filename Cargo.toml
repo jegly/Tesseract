@@ -61,7 +61,7 @@ tiny-keccak = { version = "2.0", features = ["kmac"] }
 ml-kem = { version = "0.3", features = ["hazmat"] }
 ml-dsa = "0.1"
 x25519-dalek = { version = "2.0", features = ["static_secrets", "zeroize"] }
-ed25519-dalek = { version = "2.2", features = ["zeroize", "rand_core"] }
+ed25519-dalek = { version = "3.0", features = ["zeroize", "rand_core"] }
 
 # crypto: support
 subtle = "2.6"
