@@ -86,7 +86,7 @@ landlock = "0.4"
 seccompiler = "0.5"
 fuser = "0.17"
 zbus = "5"
-sd-notify = "0.4"
+sd-notify = "0.5"
 nix = { version = "0.31", features = ["socket", "uio", "mount", "fs", "user"] }
 
 # app
