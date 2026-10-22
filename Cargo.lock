@@ -350,12 +350,6 @@ dependencies = [
 
 [[package]]
 name = "base64"
-version = "0.22.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "72b3254f16251a8381aa12e40e3c4d2f0199f8c6508fbecb9d91f575e0fbb8c6"
-
-[[package]]
-name = "base64"
 version = "0.23.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ac07cdecf99051d9a5238b80f35af32cdeba5b336e55d957b318b50137e18da5"
@@ -723,13 +717,13 @@ dependencies = [
 
 [[package]]
 name = "ctap-hid-fido2"
-version = "3.5.12"
+version = "3.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "96157315d868b9012e2a7105d22badfbff69f191d2beb8d6f32487ad85c429e1"
+checksum = "73e2cee48715b2a8fae3739aeb8433817051a6772562ba67f9b631fc833eb793"
 dependencies = [
  "aes",
  "anyhow",
- "base64 0.22.1",
+ "base64",
  "byteorder",
  "cbc",
  "ciborium",
@@ -868,7 +862,7 @@ dependencies = [
  "libc",
  "option-ext",
  "redox_users",
- "windows-sys 0.59.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -969,7 +963,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "39cab71617ae0d63f51a36d69f866391735b51691dbda63cf6f96d042b63efeb"
 dependencies = [
  "libc",
- "windows-sys 0.52.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -1316,7 +1310,7 @@ dependencies = [
  "gobject-sys",
  "libc",
  "system-deps",
- "windows-sys 0.52.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -1522,9 +1516,9 @@ checksum = "e712f64ec3850b98572bffac52e2c6f282b29fe6c5fa6d42334b30be438d95c1"
 
 [[package]]
 name = "hidapi"
-version = "2.6.6"
+version = "2.6.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c78dadfc12f865bc3fcac3897e64533b930737ceb9ef245c8277de98d0b010e9"
+checksum = "818c0e1d27887aaf76fe737042e27a66b796a7b099e6d2e1a72d106c2dff3fa6"
 dependencies = [
  "cc",
  "cfg-if",
@@ -2406,7 +2400,7 @@ dependencies = [
  "errno",
  "libc",
  "linux-raw-sys",
- "windows-sys 0.52.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -2767,7 +2761,7 @@ dependencies = [
  "getrandom 0.4.3",
  "once_cell",
  "rustix",
- "windows-sys 0.52.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -2775,7 +2769,7 @@ name = "tesseract-agent"
 version = "0.1.1"
 dependencies = [
  "anyhow",
- "base64 0.23.1",
+ "base64",
  "blake3",
  "ctap-hid-fido2",
  "env_logger",
