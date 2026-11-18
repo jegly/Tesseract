@@ -87,7 +87,7 @@ seccompiler = "0.5"
 fuser = "0.18"
 zbus = "5"
 sd-notify = "0.5"
-nix = { version = "0.31", features = ["socket", "uio", "mount", "fs", "user"] }
+nix = { version = "0.32", features = ["socket", "uio", "mount", "fs", "user"] }
 
 # app
 clap = { version = "4", features = ["derive"] }
